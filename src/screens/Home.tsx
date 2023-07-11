@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet,View,Text, SafeAreaView, Button, Pressable } from 'react-native'
+import { StyleSheet,View,Text, SafeAreaView, Button, Pressable, TouchableOpacity } from 'react-native'
 
 // Async Storage
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -45,23 +45,26 @@ export default function Home({navigation}:HomeProps) {
   return (
     <SafeAreaView >
        <View style={styles.card}>
-       <Text style={styles.text}>{scores.iKnow} |  Know </Text>
-        <Text style={styles.text}>{scores.dontKnow} |  Don't know</Text>
-        <Text style={styles.text}>{scores.research} |  Need to research</Text>
-        <Text style={styles.text}>{scores.skiped} | Skiped</Text>
+       <Text style={{fontSize:24,fontWeight:'600',color:'red'}}>{scores.iKnow} |  Know </Text>
+        <Text style={{fontSize:24,fontWeight:'600',color:'#D204FB'}}>{scores.dontKnow} |  Don't know</Text>
+        <Text style={{fontSize:24,fontWeight:'600',color:'#38FB04'}}>{scores.research} |  Need to research</Text>
+        <Text style={{fontSize:24,fontWeight:'600',color:'white'}}>{scores.skiped} | Skiped</Text>
        </View>
        
 
 
 
 
-     <Button 
+     <TouchableOpacity 
+     style={styles.button}
      
-     title='Start'
      onPress={()=>{
         navigation.navigate('Flashcard')
      }}
-     />
+     >
+        <Text style={styles.buttonText}>Start</Text>
+        </TouchableOpacity>
+
      <Button 
      color='red'
      title='Reset Score'
@@ -88,16 +91,28 @@ const removeValue = async () => {
     card:{
         backgroundColor:'#31312B',
         textDecorationColor:'#fff',
-        paddingLeft: 20,
+        paddingLeft: 30,
         margin:25,
         borderRadius:20,
+        padding:20,
 
         
     },
-    text:{
-        color:'white',
-        fontSize:23,
-        fontWeight:'600'
-
-    }
+    button: {
+        backgroundColor: 'blue',
+        paddingVertical: 85,
+        paddingHorizontal: 2,
+        borderRadius: 100,
+        height: 200,
+        width: 200,
+        alignSelf: 'center',
+        marginBottom:20,
+        marginTop:50
+      },
+      buttonText: {
+        color: 'white',
+        fontSize: 16,
+        textAlign: 'center',
+      },
+   
   })

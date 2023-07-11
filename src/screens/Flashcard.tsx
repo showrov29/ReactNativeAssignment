@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStackParamList } from '../App'
 import { useNavigation } from '@react-navigation/native'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
+import { SvgXml } from 'react-native-svg';
 type FlashcardProps = NativeStackScreenProps<RootStackParamList,'Flashcard'>
 
 export default function Flashcard({route,navigation}:FlashcardProps) {
@@ -51,7 +52,10 @@ const value = {
     skiped:skiped,
    
 }
-   
+
+
+
+  
   return (
     <View>
 
@@ -74,8 +78,12 @@ const value = {
          
         }}
         />
+
+
+
          <Button
-        title='Next question'
+      title='Next question'
+      color='#D204FB'
         onPress={()=>{
             setSkiped(skiped+1)
             if(data.length>questionId+1){
@@ -88,12 +96,16 @@ const value = {
            
         } }
         />
+
+             
        
 
 
         <View style={styles.btnContainer}>
-        <Button
-        title='I know'
+
+
+     <TouchableOpacity
+       style={styles.iconBtn}
         onPress={() =>{
             setIknow(iKnow+1)
             if(data.length>questionId+1){
@@ -104,9 +116,17 @@ const value = {
                
             }
         }}
-        />
-        <Button
-        title='I dont know'
+        >
+             <SvgXml xml={iKnowIcon}  />
+             <Text style={{fontWeight:'600'}}>I know</Text>
+
+     </TouchableOpacity>
+
+
+
+
+    <TouchableOpacity
+        style={styles.iconBtn}
         onPress={() =>{
             setDontKnow(dontKnow+1)
             if(data.length>questionId+1){
@@ -117,9 +137,16 @@ const value = {
               
             }
         }}
-        />
-        <Button
-        title='I need to research'
+        >
+             <SvgXml xml={dontKnowIcon}  />
+             <Text style={{fontWeight:'600'}}>I Don't Know</Text>
+
+    </TouchableOpacity>
+
+
+
+    <TouchableOpacity
+         style={styles.iconBtn}
         onPress={() =>{
             setResearch(research+1)
            
@@ -132,12 +159,20 @@ const value = {
               Alert.alert("Quiz fininishe")
             }
         }}
-        />
+        >
+             <SvgXml xml={researchIcon}  />
+             <Text style={{fontWeight:'600'}}>Need to research</Text>
+     </TouchableOpacity>
+
+        
         </View>
     </View>
     </View>
   )
 }
+
+
+
 
 
 const storeData = async (value:any) => {
@@ -159,6 +194,7 @@ const storeData = async (value:any) => {
     btnContainer: {
       flexDirection:'row',
         marginTop: 50,
+        justifyContent:'space-around'
        
 
     },
@@ -167,13 +203,35 @@ const storeData = async (value:any) => {
         height:200,
         borderRadius:20,
         marginHorizontal:10,
+        marginVertical:5,
         alignItems:'center',
         justifyContent:'center'
     
        
 
+    },
+    iconBtn: {
+        alignItems: 'center',
+        borderRadius:6,
+        borderWidth:.5,
+        padding:4,
+        height:100,
+        width:100,
     }
   })
+
+
+
+  const iKnowIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3.5" stroke-linecap="butt" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+`; 
+  const skipedIcon= `
+  <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3.5" stroke-linecap="butt" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+`; 
+  const dontKnowIcon = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3.5" stroke-linecap="butt" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`; 
+  const researchIcon = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3.5" stroke-linecap="butt" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`; 
 
  export const data=[
     {

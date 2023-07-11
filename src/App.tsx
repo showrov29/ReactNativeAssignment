@@ -48,12 +48,17 @@ function App(): JSX.Element {
   return (
     <>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
+      <Stack.Navigator initialRouteName='Home' >
         <Stack.Screen
         name='Home'
         component={Home}
         options={{
           title: 'Home',
+          // headerTintColor:Colors.black,
+          // headerStyle:{
+          //   backgroundColor:'blue',
+          // }
+         
         }}
         />
         <Stack.Screen

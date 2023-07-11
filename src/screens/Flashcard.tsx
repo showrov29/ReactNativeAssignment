@@ -1,5 +1,5 @@
 import React, { useState ,useEffect} from 'react'
-import { StyleSheet,View,Text, Button } from 'react-native'
+import { StyleSheet,View,Text, Button, Alert, TouchableOpacity } from 'react-native'
 
 //Async Storage
 
@@ -17,6 +17,7 @@ export default function Flashcard({route,navigation}:FlashcardProps) {
     const [iKnow,setIknow]=useState(0)
     const [dontKnow,setDontKnow]=useState(0)
     const [research,setResearch]=useState(0)
+    const [skiped,setSkiped]=useState(0)
    const [questionId,setQuestionId]=useState(0)
   
 
@@ -31,6 +32,8 @@ export default function Flashcard({route,navigation}:FlashcardProps) {
          setIknow(data.iKnow)
          setDontKnow(data.dontKnow)
          setResearch(data.research)
+         setSkiped(data.skiped)
+         
         } 
         
     }catch (e) {
@@ -40,21 +43,32 @@ export default function Flashcard({route,navigation}:FlashcardProps) {
       };
       getData()
 },[])
+
+const value = {
+    iKnow:iKnow,
+    dontKnow:dontKnow,
+    research:research,
+    skiped:skiped,
+   
+}
    
   return (
     <View>
 
-        <Text>{data[questionId].question }</Text>
-        <Text>{data[questionId].ans }</Text>
+        <View>
+
+       <TouchableOpacity style={styles.card}>
+       <Text style={{fontSize:15,fontWeight:'600'}}>{data[questionId].question }</Text>
+        <Text style={{fontSize:20,fontWeight:'bold'}}>{data[questionId].ans }</Text>
+
+       </TouchableOpacity>
+       
+
          <Button
         title='Home'
         onPress={() =>{
 
-            const value = {
-                iKnow:iKnow,
-                dontKnow:dontKnow,
-                research:research
-            }
+           
             storeData(value)
             navigation.pop()
          
@@ -63,16 +77,21 @@ export default function Flashcard({route,navigation}:FlashcardProps) {
          <Button
         title='Next question'
         onPress={()=>{
+            setSkiped(skiped+1)
             if(data.length>questionId+1){
                 setQuestionId(questionId+1)
             }
             else{
-                setQuestionId(0)
+                Alert.alert("Quiz fininishe")
             }
             
            
         } }
         />
+       
+
+
+        <View style={styles.btnContainer}>
         <Button
         title='I know'
         onPress={() =>{
@@ -81,7 +100,8 @@ export default function Flashcard({route,navigation}:FlashcardProps) {
                 setQuestionId(questionId+1)
             }
             else{
-                setQuestionId(0)
+                Alert.alert("Quiz fininishe")
+               
             }
         }}
         />
@@ -93,7 +113,8 @@ export default function Flashcard({route,navigation}:FlashcardProps) {
                 setQuestionId(questionId+1)
             }
             else{
-                setQuestionId(0)
+                Alert.alert("Quiz fininished")
+              
             }
         }}
         />
@@ -101,14 +122,19 @@ export default function Flashcard({route,navigation}:FlashcardProps) {
         title='I need to research'
         onPress={() =>{
             setResearch(research+1)
+           
+            
             if(data.length>questionId+1){
                 setQuestionId(questionId+1)
             }
             else{
-                setQuestionId(0)
+              
+              Alert.alert("Quiz fininishe")
             }
         }}
         />
+        </View>
+    </View>
     </View>
   )
 }
@@ -119,6 +145,7 @@ const storeData = async (value:any) => {
     try {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem('scores', jsonValue);
+     
       console.log(jsonValue);
       
     } catch (e) {
@@ -127,10 +154,31 @@ const storeData = async (value:any) => {
     }
   };
 
+
+  const styles=StyleSheet.create({
+    btnContainer: {
+      flexDirection:'row',
+        marginTop: 50,
+       
+
+    },
+    card:{
+        backgroundColor:'#E3D7D5',
+        height:200,
+        borderRadius:20,
+        marginHorizontal:10,
+        alignItems:'center',
+        justifyContent:'center'
+    
+       
+
+    }
+  })
+
  export const data=[
     {
     id:0,
-    question:"Capital of uganda",
+    question:"Capital of uganda ?",
     ans:'Ruanda'
     },
     {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet,View,Text, SafeAreaView, Button } from 'react-native'
+import { StyleSheet,View,Text, SafeAreaView, Button, Pressable } from 'react-native'
 
 // Async Storage
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,16 +15,15 @@ export default function Home({navigation}:HomeProps) {
 
     
 
-    const [scores,setScores] = useState({iKnow:0,dontKnow:0,research:0})
+    const [scores,setScores] = useState({iKnow:0,dontKnow:0,research:0,skiped:0})
     useEffect(() => {
         const getData = async () => {
             try {
-               
-                
+
               const jsonValue = await AsyncStorage.getItem('scores');
              
               if(jsonValue ==null){
-                const def={iKnow:0,dontKnow:0,research:0}
+                const def={iKnow:0,dontKnow:0,research:0,skiped:0}
                 setScores(def)
               }
               else{
@@ -45,17 +44,26 @@ export default function Home({navigation}:HomeProps) {
    
   return (
     <SafeAreaView >
-        <Text>{scores.iKnow} I Know </Text>
-        <Text>{scores.dontKnow} I don't know</Text>
-        <Text>{scores.research} I need to research</Text>
+       <View style={styles.card}>
+       <Text style={styles.text}>{scores.iKnow} |  Know </Text>
+        <Text style={styles.text}>{scores.dontKnow} |  Don't know</Text>
+        <Text style={styles.text}>{scores.research} |  Need to research</Text>
+        <Text style={styles.text}>{scores.skiped} | Skiped</Text>
+       </View>
+       
+
+
+
 
      <Button 
+     
      title='Start'
      onPress={()=>{
         navigation.navigate('Flashcard')
      }}
      />
      <Button 
+     color='red'
      title='Reset Score'
      onPress={()=>{
         removeValue()
@@ -74,3 +82,22 @@ const removeValue = async () => {
   
     console.log('Done.')
   }
+
+
+  const styles=StyleSheet.create({
+    card:{
+        backgroundColor:'#31312B',
+        textDecorationColor:'#fff',
+        paddingLeft: 20,
+        margin:25,
+        borderRadius:20,
+
+        
+    },
+    text:{
+        color:'white',
+        fontSize:23,
+        fontWeight:'600'
+
+    }
+  })

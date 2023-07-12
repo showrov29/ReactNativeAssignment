@@ -33,7 +33,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import Home from './screens/Home';
 import Flashcard from './screens/Flashcard';
 
-
 export type RootStackParamList={
   Home:undefined,
   Flashcard:undefined
@@ -54,6 +53,8 @@ function App(): JSX.Element {
         component={Home}
         options={{
           title: 'Home',
+        
+        
           // headerTintColor:Colors.black,
           // headerStyle:{
           //   backgroundColor:'blue',
@@ -66,6 +67,7 @@ function App(): JSX.Element {
         component={Flashcard}
         options={{
           title: 'Quick quiz',
+          headerBackVisible:false
         }}
         />
       </Stack.Navigator>

@@ -79,6 +79,7 @@ export default function Home({navigation}:HomeProps) {
 const removeValue = async () => {
     try {
       await AsyncStorage.removeItem('scores')
+      await AsyncStorage.removeItem('questionId')
     } catch(e) {
       // remove error
     }

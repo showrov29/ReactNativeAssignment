@@ -21,19 +21,36 @@ export default function Flashcard({route,navigation}:FlashcardProps) {
     const [skiped,setSkiped]=useState(0)
    const [questionId,setQuestionId]=useState(0)
   
+   const [hasQuestion,setHasQuestion]=useState(true)
+  
 
    useEffect(() => {
+
+
     const getData = async () => {
         try {
            
             
           const jsonValue = await AsyncStorage.getItem('scores'); 
+          const qsid = await AsyncStorage.getItem('questionId') 
+          console.log("from get data "+qsid);
+         if (qsid != null) {
+          
+          setQuestionId(parseInt(qsid))
+         
+          
+         }
+          
+          
+          // console.log("from getData: " + qsid.toInt());
+          
          const data= jsonValue != null ? JSON.parse(jsonValue) : null;
          if(data != null) {
          setIknow(data.iKnow)
          setDontKnow(data.dontKnow)
          setResearch(data.research)
          setSkiped(data.skiped)
+      //  setQuestionId()
          
         } 
         
@@ -43,7 +60,28 @@ export default function Flashcard({route,navigation}:FlashcardProps) {
         }
       };
       getData()
+
+
+      if(data.length>=questionId+1){
+        console.log(questionId);
+        
+      //  setHasQuestion(false)
+
+      }
 },[])
+
+
+useEffect(() => {
+  console.log('value of skiped ' + skiped);
+  console.log('value of i Know ' + iKnow);
+  console.log('value of dont kno ' + dontKnow);
+  console.log('value of  research ' + research);
+  
+  storeData(value,questionId)
+}, [skiped, dontKnow, research,iKnow])
+
+
+
 
 const value = {
     iKnow:iKnow,
@@ -62,9 +100,20 @@ const value = {
         <View>
 
        <TouchableOpacity style={styles.card}>
-       <Text style={{fontSize:15,fontWeight:'600'}}>{data[questionId].question }</Text>
-        <Text style={{fontSize:20,fontWeight:'bold'}}>{data[questionId].ans }</Text>
+        
+       {/* <Text style={{fontSize:20,fontWeight:'600'}}>Question No: {data[questionId].id }  </Text> */}
+       { (data[questionId]) ?
+       <>
+       <Text style={{fontSize:15,fontWeight:'600',marginBottom:20}}><Text style={{fontSize:20,fontWeight:'600'}}>Question:  </Text> {data[questionId].question }</Text>
+        <Text style={{fontSize:16,fontWeight:'400'}}><Text style={{fontSize:20,fontWeight:'bold'}}>Ans:  </Text>  {data[questionId].ans }</Text>
 
+       </>
+       :
+       <>
+       <Text>No Question</Text>
+       </>
+
+       }
        </TouchableOpacity>
        
 
@@ -73,7 +122,7 @@ const value = {
         onPress={() =>{
 
            
-            storeData(value)
+            storeData(value,questionId)
             navigation.pop()
          
         }}
@@ -85,12 +134,27 @@ const value = {
       title='Next question'
       color='#D204FB'
         onPress={()=>{
-            setSkiped(skiped+1)
-            if(data.length>questionId+1){
-                setQuestionId(questionId+1)
+           
+          
+          if((data.length>questionId)){
+            let x=skiped+1
+            setSkiped(x)
+              setQuestionId(questionId+1)
+                
             }
+
+           
             else{
-                Alert.alert("Quiz fininishe")
+                Alert.alert("Alert",'Quiz Finished',[{text:'Home',onPress:()=>{ 
+                  // storeData(value,questionId)
+                  // setHasQuestion(false)
+                  navigation.pop()
+                
+                }
+              }
+            ])
+
+          //  navigation.pop()
             }
             
            
@@ -107,12 +171,18 @@ const value = {
      <TouchableOpacity
        style={styles.iconBtn}
         onPress={() =>{
-            setIknow(iKnow+1)
-            if(data.length>questionId+1){
-                setQuestionId(questionId+1)
+          
+
+            if(questionId<data.length){
+              let x=iKnow+1
+              setIknow(x)
+              setQuestionId(questionId+1)
             }
+
             else{
-                Alert.alert("Quiz fininishe")
+                Alert.alert("Quiz fininished","",[{text:"Home",onPress:()=>{
+                  navigation.pop()
+                }}])
                
             }
         }}
@@ -128,12 +198,17 @@ const value = {
     <TouchableOpacity
         style={styles.iconBtn}
         onPress={() =>{
-            setDontKnow(dontKnow+1)
-            if(data.length>questionId+1){
-                setQuestionId(questionId+1)
+          console.log(questionId);
+          
+          if(questionId<data.length){
+              setDontKnow(dontKnow+1)
+              setQuestionId(questionId+1)
             }
             else{
-                Alert.alert("Quiz fininished")
+              Alert.alert("Quiz fininished","",[{text:"Home",onPress:()=>{
+                navigation.pop()
+              }}])
+             
               
             }
         }}
@@ -148,15 +223,18 @@ const value = {
     <TouchableOpacity
          style={styles.iconBtn}
         onPress={() =>{
-            setResearch(research+1)
-           
-            
-            if(data.length>questionId+1){
+          
+          
+          if(questionId<data.length){
+              setResearch(research+1)
                 setQuestionId(questionId+1)
             }
             else{
               
-              Alert.alert("Quiz fininishe")
+              Alert.alert("Quiz fininished","",[{text:"Home",onPress:()=>{
+                navigation.pop()
+              }}])
+             
             }
         }}
         >
@@ -172,15 +250,35 @@ const value = {
 }
 
 
+// const storeData2 = async (value:any,qsid:number) => {
+    
+//   try {
+//     const jsonValue = JSON.stringify(value);
+//     const num=qsid.toString()
+
+//     await AsyncStorage.setItem('scores', jsonValue);
+//     await AsyncStorage.setItem('questionId', num)
+   
+//     console.log("Question id "+num);
+    
+//     console.log(jsonValue);
+    
+//   } catch (e) {
+//     console.log('Error saving scores');
+    
+//   }
+// };
 
 
-
-const storeData = async (value:any) => {
+const storeData = async (value:any,qsid:number) => {
     
     try {
       const jsonValue = JSON.stringify(value);
+      const num=qsid.toString()
+
       await AsyncStorage.setItem('scores', jsonValue);
-     
+      await AsyncStorage.setItem('questionId', num)
+      
       console.log(jsonValue);
       
     } catch (e) {
@@ -251,3 +349,5 @@ const storeData = async (value:any) => {
     },
 
 ]
+
+

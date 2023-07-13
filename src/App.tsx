@@ -26,52 +26,47 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 // Navigation
-import {NavigationContainer} from '@react-navigation/native'
-import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 //import Screens
 import Home from './screens/Home';
 import Flashcard from './screens/Flashcard';
 
-export type RootStackParamList={
-  Home:undefined,
-  Flashcard:undefined
-}
+export type RootStackParamList = {
+  Home: undefined;
+  Flashcard: undefined;
+};
 
-
-const Stack=createNativeStackNavigator<RootStackParamList>()
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): JSX.Element {
-
-
   return (
     <>
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home' >
-        <Stack.Screen
-        name='Home'
-        component={Home}
-        options={{
-          title: 'Home',
-        
-        
-          // headerTintColor:Colors.black,
-          // headerStyle:{
-          //   backgroundColor:'blue',
-          // }
-         
-        }}
-        />
-        <Stack.Screen
-       name='Flashcard'
-        component={Flashcard}
-        options={{
-          title: 'Quick quiz',
-          headerBackVisible:false
-        }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{
+              title: 'Home',
+
+              // headerTintColor:Colors.black,
+              // headerStyle:{
+              //   backgroundColor:'blue',
+              // }
+            }}
+          />
+          <Stack.Screen
+            name="Flashcard"
+            component={Flashcard}
+            options={{
+              title: 'Quick quiz',
+              headerBackVisible: false,
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </>
   );
 }

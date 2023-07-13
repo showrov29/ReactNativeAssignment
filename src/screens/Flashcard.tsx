@@ -49,7 +49,7 @@ export default function Flashcard({route, navigation}: FlashcardProps) {
           answerMap[questionId].answer = 'iKnow';
           answerMap[questionId].questionNo = questionId;
           setDontKnow(dontKnow - 1);
-          setDontKnow(iKnow + 1);
+          setIknow(iKnow + 1);
           setQuestionId(questionId + 1);
         } else if (answerMap[questionId].answer == 'needToResearch') {
           answerMap[questionId].answer = 'iKnow';
@@ -183,6 +183,8 @@ export default function Flashcard({route, navigation}: FlashcardProps) {
   };
 
   const handleNextQuestion = () => {
+    console.log(iknowRef);
+
     if (data.length > questionId) {
       if (hasAns && answerMap[questionId]) {
         if (answerMap[questionId].answer == 'skipped') {
@@ -340,7 +342,14 @@ export default function Flashcard({route, navigation}: FlashcardProps) {
 
         <View style={styles.btnContainer}>
           <TouchableOpacity
-            style={styles.iconBtn}
+            style={{
+              ...styles.iconBtn,
+              backgroundColor:
+                answerMap[questionId] != null &&
+                answerMap[questionId].answer == 'iKnow'
+                  ? 'red'
+                  : 'white',
+            }}
             onPress={() => {
               handleIKnow();
             }}>
@@ -349,7 +358,14 @@ export default function Flashcard({route, navigation}: FlashcardProps) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.iconBtn}
+            style={{
+              ...styles.iconBtn,
+              backgroundColor:
+                answerMap[questionId] != null &&
+                answerMap[questionId].answer == 'dontKnow'
+                  ? 'red'
+                  : 'white',
+            }}
             onPress={() => {
               handleDontKnow();
             }}>
@@ -358,7 +374,14 @@ export default function Flashcard({route, navigation}: FlashcardProps) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.iconBtn}
+            style={{
+              ...styles.iconBtn,
+              backgroundColor:
+                answerMap[questionId] != null &&
+                answerMap[questionId].answer == 'needToResearch'
+                  ? 'red'
+                  : 'white',
+            }}
             onPress={() => {
               handleNeedToResearch();
             }}>

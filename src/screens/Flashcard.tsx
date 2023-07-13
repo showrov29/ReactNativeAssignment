@@ -183,57 +183,54 @@ export default function Flashcard({route, navigation}: FlashcardProps) {
   };
 
   const handleNextQuestion = () => {
-    console.log(iknowRef);
-
-    if (data.length > questionId) {
-      if (hasAns && answerMap[questionId]) {
-        if (answerMap[questionId].answer == 'skipped') {
-          answerMap[questionId].answer = 'skipped';
-          answerMap[questionId].questionNo = questionId;
-          setQuestionId(questionId + 1);
-
-          setSkiped(skiped);
-        } else if (answerMap[questionId].answer == 'iKnow') {
-          answerMap[questionId].answer = 'skipped';
-          answerMap[questionId].questionNo = questionId;
-          setIknow(iKnow - 1);
-          setSkiped(skiped + 1);
-          setQuestionId(questionId + 1);
-        } else if (answerMap[questionId].answer == 'dontKnow') {
-          answerMap[questionId].answer = 'skipped';
-          answerMap[questionId].questionNo = questionId;
-          setDontKnow(dontKnow - 1);
-          setSkiped(skiped + 1);
-          setQuestionId(questionId + 1);
-        } else if (answerMap[questionId].answer == 'needToResearch') {
-          answerMap[questionId].answer = 'skipped';
-          answerMap[questionId].questionNo = questionId;
-          setResearch(research - 1);
-          setSkiped(skiped + 1);
-          setQuestionId(questionId + 1);
-        }
-      } else {
-        let x = skiped + 1;
-        setSkiped(x);
-        setQuestionId(questionId + 1);
-        const mapValue = {
-          questionNo: questionId,
-          answer: 'skipped',
-        };
-        answerMap.push(mapValue);
-      }
-    } else {
-      Alert.alert('Alert', 'Quiz Finished', [
-        {
-          text: 'Update',
-          onPress: () => {
-            // navigation.pop();
-            setHasAns(true);
-            setQuestionId(0);
-          },
-        },
-      ]);
-    }
+    setQuestionId(questionId + 1);
+    // if (data.length > questionId) {
+    //   if (hasAns && answerMap[questionId]) {
+    //   //   if (answerMap[questionId].answer == 'skipped') {
+    //   //     answerMap[questionId].questionNo = questionId;
+    //   //     setQuestionId(questionId + 1);
+    //   //     setSkiped(skiped);
+    //   //   } else if (answerMap[questionId].answer == 'iKnow') {
+    //   //     // answerMap[questionId].answer = 'skipped';
+    //   //     answerMap[questionId].questionNo = questionId;
+    //   //     setIknow(iKnow - 1);
+    //   //     setSkiped(skiped + 1);
+    //   //     setQuestionId(questionId + 1);
+    //   //   } else if (answerMap[questionId].answer == 'dontKnow') {
+    //   //     // answerMap[questionId].answer = 'skipped';
+    //   //     answerMap[questionId].questionNo = questionId;
+    //   //     setDontKnow(dontKnow - 1);
+    //   //     setSkiped(skiped + 1);
+    //   //     setQuestionId(questionId + 1);
+    //   //   } else if (answerMap[questionId].answer == 'needToResearch') {
+    //   //     // answerMap[questionId].answer = 'skipped';
+    //   //     answerMap[questionId].questionNo = questionId;
+    //   //     setResearch(research - 1);
+    //   //     setSkiped(skiped + 1);
+    //   //     setQuestionId(questionId + 1);
+    //   //   }
+    //   // } else {
+    //   //   let x = skiped + 1;
+    //   //   // setSkiped(x);
+    //   //   setQuestionId(questionId + 1);
+    //   //   const mapValue = {
+    //   //     questionNo: questionId,
+    //   //     answer: 'skipped',
+    //   //   };
+    //   //   answerMap.push(mapValue);
+    //   // }
+    // } else {
+    //   Alert.alert('Alert', 'Quiz Finished', [
+    //     {
+    //       text: 'Update',
+    //       onPress: () => {
+    //         // navigation.pop();
+    //         setHasAns(true);
+    //         setQuestionId(0);
+    //       },
+    //     },
+    //   ]);
+    // }
   };
 
   useEffect(() => {

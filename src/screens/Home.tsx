@@ -56,9 +56,9 @@ export default function Home({navigation}: HomeProps) {
         <Text style={{fontSize: 24, fontWeight: '600', color: '#38FB04'}}>
           {scores.research} | Need to research
         </Text>
-        <Text style={{fontSize: 24, fontWeight: '600', color: 'white'}}>
+        {/* <Text style={{fontSize: 24, fontWeight: '600', color: 'white'}}>
           {scores.skiped} | Skipped
-        </Text>
+        </Text> */}
       </View>
 
       <TouchableOpacity
